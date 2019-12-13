@@ -1,6 +1,6 @@
 Name:           libjpeg-turbo
 Version:        2.0.0
-Release:        2
+Release:        3
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
 URL:            http://sourceforge.net/projects/libjpeg-turbo
@@ -10,28 +10,29 @@ Patch0:         libjpeg-turbo-cmake.patch
 
 BuildRequires:  gcc cmake libtool nasm
 
-Obsoletes:      libjpeg < 6b-47 turbojpeg %{name}-utils
-Provides:       libjpeg = 6b-47 turbojpeg %{name}-utils
+Obsoletes:      libjpeg < 6b-47 turbojpeg = %{version}-%{release}  
+Provides:       libjpeg = 6b-47 turbojpeg < %{version}-%{release}  
+
+Provides:       %{name}-utils = %{version}-%{release}
+Obsoletes:      %{name}-utils < %{version}-%{release}
 
 %description
 libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX, SSE2, NEON, AltiVec)
 to accelerate baseline JPEG compression and decompression on x86, x86-64, and ARM systems.
 
-%package   devel
-Summary:   Development files for the libjpeg-turbo library
-Requires:  libjpeg-turbo = %{version}-%{release}
-Provides:  libjpeg-devel = 6b-47 libjpeg-turbo-static = 1.3.1 turbojpeg-devel
-Obsoletes: libjpeg-devel < 6b-47 libjpeg-turbo-static < 1.3.1 turbojpeg-devel
+%package        devel
+Summary:        Development files for the libjpeg-turbo library
+Requires:       libjpeg-turbo = %{version}-%{release}
+Provides:       libjpeg-turbo-static = 1.3.1 turbojpeg-devel = %{version}-%{release}
+Obsoletes:      libjpeg-turbo-static < 1.3.1 turbojpeg-devel < %{version}-%{release}
+Provides:       libjpeg-devel = 6b-47 libjpeg-devel%{?_isa} = %{version}-%{release}
+Obsoletes:      libjpeg-devel < 6b-47 libjpeg-devel%{?_isa} < %{version}-%{release}
+
 
 %description devel
 Development files for the libjpeg-turbo library.
 
-%package   help
-Summary:   help document for the libjpeg-turbo package
-Buildarch: noarch
-
-%description help
-help document for the libjpeg-turbo package.
+%package_help
 
 %prep
 %autosetup -n %{name}-%{version} -p1
@@ -47,22 +48,48 @@ help document for the libjpeg-turbo package.
 
 chmod -x README.md
 
+%ifarch x86_64
+  %global wordsize "64"
+%else
+  %global wordsize ""
+%endif
+
+if test -n "$wordsize"
+then
+  pushd $RPM_BUILD_ROOT%{_includedir}
+    mv jconfig.h jconfig-$wordsize.h
+    cat > jconfig.h <<EOF
+#ifndef JCONFIG_H_MULTILIB
+#define JCONFIG_H_MULTILIB
+
+#include <bits/wordsize.h>
+
+#if __WORDSIZE == 32
+# include "jconfig-32.h"
+#elif __WORDSIZE == 64
+# include "jconfig-64.h"
+#else
+# error "unexpected value for __WORDSIZE macro"
+#endif
+
+#endif
+EOF
+fi
+    
 %check
 %if %{?_with_check:1}%{!?_with_check:0}
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %endif
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%ldconfig_scriptlets
 
 %files
-%doc LICENSE.md README.* ChangeLog.md usage.txt wizard.txt
+%defattr(-,root,root)
+%doc README.*
+%license LICENSE.md
+%{_bindir}/*
 %{_libdir}/libjpeg.so.62*
 %{_libdir}/libturbojpeg.so.0*
-%{_bindir}/*
 
 %files devel
 %doc coderules.txt jconfig.txt libjpeg.txt structure.txt example.txt tjexample.c
@@ -71,8 +98,15 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_libdir}/pkgconfig/*.pc
 
 %files help
+%doc usage.txt wizard.txt ChangeLog.md
 %{_mandir}/man1/*.1*
 
 %changelog
+* Fri Nov 1 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.0.0-3
+- Type:bugfix
+- Id:NA
+- SUG:NA
+- DESC:add the libjpeg-devel%{?_isa} and jconfig.h
+
 * Sat Sep 21 2019 Lijin Yang <yanglijin@huawei.com> - 2.0.0-2
 - Package init
