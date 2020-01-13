@@ -88,6 +88,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_bindir}/*
 %{_libdir}/libjpeg.so.62*
 %{_libdir}/libturbojpeg.so.0*
+%exclude /usr/share/doc/libjpeg-turbo/*
 
 %files devel
 %doc coderules.txt jconfig.txt libjpeg.txt structure.txt example.txt tjexample.c
