@@ -6,8 +6,6 @@ License:        IJG
 URL:            http://sourceforge.net/projects/libjpeg-turbo
 Source0:        http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-%{version}.tar.gz
 
-Patch0:         libjpeg-turbo-cmake.patch
-
 BuildRequires:  gcc cmake libtool nasm
 
 Obsoletes:      libjpeg < 6b-47 turbojpeg = %{version}-%{release}  
@@ -90,6 +88,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_bindir}/*
 %{_libdir}/libjpeg.so.62*
 %{_libdir}/libturbojpeg.so.0*
+%exclude /usr/share/doc/libjpeg-turbo/*
 
 %files devel
 %doc coderules.txt jconfig.txt libjpeg.txt structure.txt example.txt tjexample.c
