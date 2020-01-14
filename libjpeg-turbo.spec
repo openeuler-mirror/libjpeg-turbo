@@ -1,6 +1,6 @@
 Name:           libjpeg-turbo
 Version:        2.0.0
-Release:        3
+Release:        4
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
 URL:            http://sourceforge.net/projects/libjpeg-turbo
@@ -24,7 +24,7 @@ Requires:       libjpeg-turbo = %{version}-%{release}
 Provides:       libjpeg-turbo-static = 1.3.1 turbojpeg-devel = %{version}-%{release}
 Obsoletes:      libjpeg-turbo-static < 1.3.1 turbojpeg-devel < %{version}-%{release}
 Provides:       libjpeg-devel = 6b-47 libjpeg-devel%{?_isa} = %{version}-%{release}
-Obsoletes:      libjpeg-devel < 6b-47 libjpeg-devel%{?_isa} < %{version}-%{release}
+Obsoletes:      libjpeg-devel < 6b-47
 
 
 %description devel
@@ -101,11 +101,17 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
+* Tue Jan 14 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.0.0-4
+- Type:bugfix
+- Id:NA
+- SUG:NA
+- DESC:remove the libjpeg-devel with arch in obsoletes
+
 * Fri Nov 1 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.0.0-3
 - Type:bugfix
 - Id:NA
 - SUG:NA
-- DESC:add the libjpeg-devel%{?_isa} and jconfig.h
+- DESC:add the libjpeg-devel and jconfig.h
 
 * Sat Sep 21 2019 Lijin Yang <yanglijin@huawei.com> - 2.0.0-2
 - Package init
