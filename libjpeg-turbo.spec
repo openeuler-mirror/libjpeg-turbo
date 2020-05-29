@@ -101,7 +101,7 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
-* Tue Jan 14 2019 openEuler Buildteam <buildteam@openeuler.org> - 2.0.0-4
+* Tue Jan 14 2020 openEuler Buildteam <buildteam@openeuler.org> - 2.0.0-4
 - Type:bugfix
 - Id:NA
 - SUG:NA
