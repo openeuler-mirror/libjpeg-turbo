@@ -1,5 +1,5 @@
 Name:           libjpeg-turbo
-Version:        2.0.4
+Version:        2.0.5
 Release:        1
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
@@ -101,6 +101,12 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
+* Thu Jul 23 2020 openEuler Buildteam <buildteam@openeuler.org> - 2.0.5-1
+- Type:enhancement
+- Id:NA
+- SUG:NA
+- DESC:upgrade to 2.0.5
+
 * Mon May 11 2020 openEuler Buildteam <buildteam@openeuler.org> - 2.0.4-1
 - Type:requirement
 - Id:NA
