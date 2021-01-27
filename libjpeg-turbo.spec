@@ -1,5 +1,5 @@
 Name:           libjpeg-turbo
-Version:        2.0.5
+Version:        2.0.6
 Release:        1
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
@@ -8,8 +8,8 @@ Source0:        http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-%{v
 
 BuildRequires:  gcc cmake libtool nasm
 
-Obsoletes:      libjpeg < 6b-47 turbojpeg = %{version}-%{release}  
-Provides:       libjpeg = 6b-47 turbojpeg < %{version}-%{release}  
+Obsoletes:      libjpeg < 6b-47 turbojpeg < %{version}-%{release}  
+Provides:       libjpeg = 6b-47 turbojpeg = %{version}-%{release}  
 
 Provides:       %{name}-utils = %{version}-%{release}
 Obsoletes:      %{name}-utils < %{version}-%{release}
@@ -101,6 +101,12 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
+* Wed Jan 27 2021 hanhui <hanhui15@huawei.com> - 2.0.6-1
+- Type: enhancement
+- ID:   NA
+- SUG:  NA
+- DESC: update to 2.0.6
+
 * Wed Jul 22 2020 openEuler Buildteam <buildteam@openeuler.org> - 2.0.5-1
 - Type:enhancement
 - Id:NA
