@@ -1,5 +1,5 @@
 Name:           libjpeg-turbo
-Version:        2.0.6
+Version:        2.1.1
 Release:        1
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
@@ -29,6 +29,32 @@ Obsoletes:      libjpeg-devel < 6b-47
 
 %description devel
 Development files for the libjpeg-turbo library.
+
+%package utils
+Summary:        Utilities for manipulating JPEG images
+Requires:       libjpeg-turbo%{?_isa} = %{version}-%{release}
+ 
+%description utils
+The libjpeg-turbo-utils package contains simple client programs for accessing
+the libjpeg functions. It contains cjpeg, djpeg, jpegtran, rdjpgcom and
+wrjpgcom. Cjpeg compresses an image file into JPEG format. Djpeg decompresses a
+JPEG file into a regular image file. Jpegtran can perform various useful
+transformations on JPEG files. Rdjpgcom displays any text comments included in a
+JPEG file. Wrjpgcom inserts text comments into a JPEG file.
+
+%package -n turbojpeg
+Summary:        TurboJPEG library
+ 
+%description -n turbojpeg
+The turbojpeg package contains the TurboJPEG shared library.
+
+%package -n turbojpeg-devel
+Summary:        Headers for the TurboJPEG library
+Requires:       turbojpeg%{?_isa} = %{version}-%{release}
+ 
+%description -n turbojpeg-devel
+This package contains header files necessary for developing programs which will
+manipulate JPEG files using the TurboJPEG library.
 
 %package_help
 
@@ -85,22 +111,45 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %defattr(-,root,root)
 %doc README.*
 %license LICENSE.md
-%{_bindir}/*
 %{_libdir}/libjpeg.so.62*
-%{_libdir}/libturbojpeg.so.0*
 %exclude /usr/share/doc/libjpeg-turbo/*
 
 %files devel
-%doc coderules.txt jconfig.txt libjpeg.txt structure.txt example.txt tjexample.c
+%doc coderules.txt jconfig.txt libjpeg.txt structure.txt example.txt 
+%exclude %{_includedir}/turbojpeg.h
 %{_includedir}/*.h
-%{_libdir}/*.so
-%{_libdir}/pkgconfig/*.pc
+%{_libdir}/libjpeg.so
+%{_libdir}/pkgconfig/libjpeg.pc
+%{_libdir}/cmake/%{name}/%{name}*.cmake
+
+%files utils
+%doc usage.txt wizard.txt
+%{_bindir}/cjpeg
+%{_bindir}/djpeg
+%{_bindir}/jpegtran
+%{_bindir}/rdjpgcom
+%{_bindir}/wrjpgcom
+%{_bindir}/tjbench
+
+%files -n turbojpeg
+%license LICENSE.md
+%{_libdir}/libturbojpeg.so.0*
+
+%files -n turbojpeg-devel
+%doc tjexample.c
+%{_includedir}/turbojpeg.h
+%{_libdir}/libturbojpeg.so
+%{_libdir}/pkgconfig/libturbojpeg.pc
 
 %files help
-%doc usage.txt wizard.txt ChangeLog.md
+%doc ChangeLog.md
 %{_mandir}/man1/*.1*
 
 %changelog
+* Sat Nov 27 2021 wangkerong <wangkerong@huawei.com> - 2.1.1-1
+- update to 2.1.1
+- splite utils turbojpeg turbojpeg-devel subpackages
+
 * Wed Jan 27 2021 hanhui <hanhui15@huawei.com> - 2.0.6-1
 - Type: enhancement
 - ID:   NA
