@@ -1,6 +1,6 @@
 Name:           libjpeg-turbo
 Version:        2.1.1
-Release:        1
+Release:        2
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
 URL:            http://sourceforge.net/projects/libjpeg-turbo
@@ -101,9 +101,7 @@ EOF
 fi
     
 %check
-%if %{?_with_check:1}%{!?_with_check:0}
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
-%endif
 
 %ldconfig_scriptlets
 
@@ -146,6 +144,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
+* Wed Mar 30 2022 liuyumeng <liuyumeng5@h-partners.com> - 2.1.1-2
+- enable tests
+
 * Sat Nov 27 2021 wangkerong <wangkerong@huawei.com> - 2.1.1-1
 - update to 2.1.1
 - splite utils turbojpeg turbojpeg-devel subpackages
