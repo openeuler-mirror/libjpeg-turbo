@@ -1,6 +1,6 @@
 Name:           libjpeg-turbo
 Version:        2.1.1
-Release:        2
+Release:        3
 Summary:        MMX/SSE2/SIMD accelerated libjpeg-compatible JPEG codec library
 License:        IJG
 URL:            http://sourceforge.net/projects/libjpeg-turbo
@@ -62,7 +62,11 @@ manipulate JPEG files using the TurboJPEG library.
 %autosetup -n %{name}-%{version} -p1
 
 %build
-%{cmake} -DCMAKE_SKIP_RPATH:BOOL=YES -DCMAKE_SKIP_INSTALL_RPATH:BOOL=YES -DENABLE_STATIC:BOOL=NO .
+%{cmake} -DCMAKE_SKIP_RPATH:BOOL=YES -DCMAKE_SKIP_INSTALL_RPATH:BOOL=YES -DENABLE_STATIC:BOOL=NO \
+%ifarch riscv64
+    -DFLOATTEST=fp-contract \
+%endif
+    %{nil}
 
 %make_build V=1
 
@@ -144,6 +148,9 @@ LD_LIBRARY_PATH=%{buildroot}%{_libdir} make test %{?_smp_mflags}
 %{_mandir}/man1/*.1*
 
 %changelog
+* Sun Apr 24 2022 Jingwiw <ixoote@gmail.com> - 2.1.1-3
+- fix test djpeg-shared-3x2-float-prog-cmp for riscv64
+
 * Wed Mar 30 2022 liuyumeng <liuyumeng5@h-partners.com> - 2.1.1-2
 - enable tests
 
